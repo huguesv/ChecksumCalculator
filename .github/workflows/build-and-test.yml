@@ -1,0 +1,32 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    - name: Clean
+      run: dotnet clean src --configuration Release && dotnet nuget locals all --clear
+    - name: Build
+      run: dotnet build src --configuration Release
+    - name: Format
+      run: dotnet format src --verify-no-changes --verbosity diagnostic
+    - name: Test
+      run: dotnet test src --no-restore --verbosity normal

@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../LICENSE" />
+    <File Path="../README.md" />
+    <File Path="Common/Common.AssemblyInfo.cs" />
+    <File Path="Common/stylecop.json" />
+  </Folder>
+  <Project Path="Woohoo.ChecksumCalculator.AvaloniaDesktop/Woohoo.ChecksumCalculator.AvaloniaDesktop.csproj" />
+  <Project Path="Woohoo.ChecksumCalculator.Cli/Woohoo.ChecksumCalculator.Cli.csproj" />
+</Solution>

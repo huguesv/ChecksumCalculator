@@ -1,0 +1,467 @@
+﻿<Window
+    x:Class="Woohoo.ChecksumCalculator.AvaloniaDesktop.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+    xmlns:vm="using:Woohoo.ChecksumCalculator.AvaloniaDesktop.ViewModels"
+    xmlns:vmd="using:Woohoo.ChecksumCalculator.AvaloniaDesktop.ViewModels.DesignTime"
+    Title="Checksum Calculator"
+    Width="800"
+    Height="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainWindowViewModel"
+    DragDrop.AllowDrop="True"
+    Icon="/Assets/avalonia-logo.ico"
+    mc:Ignorable="d">
+
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding SelectFilesCommand}" Gesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
+        <KeyBinding Command="{Binding CopySelectedCommand}" Gesture="{OnPlatform Ctrl+C, macOS=⌘+C}" />
+        <KeyBinding Command="{Binding ClearCommand}" Gesture="{OnPlatform Ctrl+L, macOS=⌘+L}" />
+        <KeyBinding Command="{Binding CollapseAllCommand}" Gesture="{OnPlatform Ctrl+-, macOS=⌘+-}" />
+    </Window.KeyBindings>
+
+    <!--
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaToDecorationsHint="True"
+    -->
+    <Design.DataContext>
+        <vmd:DesignMainWindowViewModel />
+    </Design.DataContext>
+
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="File">
+                <NativeMenu>
+                    <NativeMenuItem Command="{Binding SelectFilesCommand}" Header="Select Files(s)..." />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="Clipboard">
+                <NativeMenu>
+                    <NativeMenuItem Command="{Binding CopySelectedCommand}" Header="Copy Checksums" />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="View">
+                <NativeMenu>
+                    <NativeMenuItem
+                        Command="{Binding ToggleShowToolbarCommand}"
+                        Header="Show Toolbar"
+                        IsChecked="{Binding ShowToolbar}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleShowAsGridCommand}"
+                        Header="Show As Grid"
+                        IsChecked="{Binding ShowAsGrid}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItemSeparator />
+                    <NativeMenuItem Command="{Binding CollapseAllCommand}" Header="Collapse All" />
+                    <NativeMenuItem Command="{Binding ClearCommand}" Header="Clear" />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="Algorithms">
+                <NativeMenu>
+                    <NativeMenuItem
+                        Command="{Binding ToggleAlgorithmCommand}"
+                        CommandParameter="CRC32"
+                        Header="CRC32"
+                        IsChecked="{Binding HashCrc32}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleAlgorithmCommand}"
+                        CommandParameter="MD5"
+                        Header="MD5"
+                        IsChecked="{Binding HashMd5}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleAlgorithmCommand}"
+                        CommandParameter="SHA1"
+                        Header="SHA1"
+                        IsChecked="{Binding HashSha1}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleAlgorithmCommand}"
+                        CommandParameter="SHA256"
+                        Header="SHA256"
+                        IsChecked="{Binding HashSha256}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleAlgorithmCommand}"
+                        CommandParameter="SHA384"
+                        Header="SHA384"
+                        IsChecked="{Binding HashSha384}"
+                        ToggleType="CheckBox" />
+                    <NativeMenuItem
+                        Command="{Binding ToggleAlgorithmCommand}"
+                        CommandParameter="SHA512"
+                        Header="SHA512"
+                        IsChecked="{Binding HashSha512}"
+                        ToggleType="CheckBox" />
+                </NativeMenu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="Help">
+                <NativeMenu>
+                    <NativeMenuItem Command="{Binding AboutCommand}" Header="About" />
+                </NativeMenu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+        <Menu Grid.Row="0" IsVisible="{Binding ShowMenu}">
+            <MenuItem Header="File">
+                <MenuItem
+                    Command="{Binding SelectFilesCommand}"
+                    Header="Select File(s)..."
+                    HotKey="{OnPlatform Ctrl+O,
+                                        macOS=⌘+O}"
+                    InputGesture="{OnPlatform Ctrl+O,
+                                              macOS=⌘+O}" />
+                <Separator />
+                <MenuItem Click="Exit_Click" Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Clipboard">
+                <MenuItem
+                    Command="{Binding CopySelectedCommand}"
+                    Header="Copy Checksums"
+                    HotKey="{OnPlatform Ctrl+C,
+                                        macOS=⌘+C}"
+                    InputGesture="{OnPlatform Ctrl+C,
+                                              macOS=⌘+C}" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem
+                    Command="{Binding ToggleShowToolbarCommand}"
+                    Header="Show Toolbar"
+                    IsChecked="{Binding ShowToolbar}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleShowAsGridCommand}"
+                    Header="Show As Grid"
+                    IsChecked="{Binding ShowAsGrid}"
+                    ToggleType="CheckBox" />
+                <Separator />
+                <MenuItem
+                    Command="{Binding CollapseAllCommand}"
+                    Header="Collapse All"
+                    HotKey="{OnPlatform Ctrl+-,
+                                        macOS=⌘+-}"
+                    InputGesture="{OnPlatform Ctrl+-,
+                                              macOS=⌘+-}" />
+                <MenuItem
+                    Command="{Binding ClearCommand}"
+                    Header="Clear"
+                    HotKey="{OnPlatform Ctrl+L,
+                                        macOS=⌘+L}"
+                    InputGesture="{OnPlatform Ctrl+L,
+                                              macOS=⌘+L}" />
+            </MenuItem>
+            <MenuItem Header="Algorithms">
+                <MenuItem
+                    Command="{Binding ToggleAlgorithmCommand}"
+                    CommandParameter="CRC32"
+                    Header="CRC32"
+                    IsChecked="{Binding HashCrc32}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleAlgorithmCommand}"
+                    CommandParameter="MD5"
+                    Header="MD5"
+                    IsChecked="{Binding HashMd5}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleAlgorithmCommand}"
+                    CommandParameter="SHA1"
+                    Header="SHA1"
+                    IsChecked="{Binding HashSha1}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleAlgorithmCommand}"
+                    CommandParameter="SHA256"
+                    Header="SHA256"
+                    IsChecked="{Binding HashSha256}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleAlgorithmCommand}"
+                    CommandParameter="SHA384"
+                    Header="SHA384"
+                    IsChecked="{Binding HashSha384}"
+                    ToggleType="CheckBox" />
+                <MenuItem
+                    Command="{Binding ToggleAlgorithmCommand}"
+                    CommandParameter="SHA512"
+                    Header="SHA512"
+                    IsChecked="{Binding HashSha512}"
+                    ToggleType="CheckBox" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Command="{Binding AboutCommand}" Header="About" />
+            </MenuItem>
+        </Menu>
+
+        <ui:CommandBar
+            Grid.Row="1"
+            DefaultLabelPosition="Right"
+            IsVisible="{Binding ShowToolbar}">
+            <ui:CommandBar.PrimaryCommands>
+                <ui:CommandBarButton
+                    AutomationProperties.Name="Select Files"
+                    Command="{Binding SelectFilesCommand}"
+                    Label="Select File(s)..." />
+                <ui:CommandBarSeparator />
+                <ui:CommandBarButton
+                    AutomationProperties.Name="Collapse All"
+                    Command="{Binding CollapseAllCommand}"
+                    Label="Collapse All" />
+                <ui:CommandBarButton
+                    AutomationProperties.Name="Clear"
+                    Command="{Binding ClearCommand}"
+                    Label="Clear" />
+                <ui:CommandBarButton
+                    AutomationProperties.Name="About"
+                    Command="{Binding AboutCommand}"
+                    Label="About" />
+                <ui:CommandBarSeparator />
+                <ui:CommandBarToggleButton
+                    AutomationProperties.Name="CRC32"
+                    IsChecked="{Binding HashCrc32}"
+                    Label="CRC32" />
+                <ui:CommandBarToggleButton
+                    AutomationProperties.Name="MD5"
+                    IsChecked="{Binding HashMd5}"
+                    Label="MD5" />
+                <ui:CommandBarToggleButton
+                    AutomationProperties.Name="SHA1"
+                    IsChecked="{Binding HashSha1}"
+                    Label="SHA1" />
+                <ui:CommandBarToggleButton
+                    AutomationProperties.Name="SHA256"
+                    IsChecked="{Binding HashSha256}"
+                    Label="SHA256" />
+                <ui:CommandBarToggleButton
+                    AutomationProperties.Name="SHA384"
+                    IsChecked="{Binding HashSha384}"
+                    Label="SHA384" />
+                <ui:CommandBarToggleButton
+                    AutomationProperties.Name="SHA512"
+                    IsChecked="{Binding HashSha512}"
+                    Label="SHA512" />
+            </ui:CommandBar.PrimaryCommands>
+        </ui:CommandBar>
+
+        <ScrollViewer
+            Grid.Row="2"
+            AllowAutoHide="False"
+            IsVisible="{Binding !ShowAsGrid}">
+            <ItemsControl
+                Margin="18,12,24,12"
+                AutomationProperties.Name="Results"
+                IsVisible="{Binding !!Results.Count}"
+                ItemsSource="{Binding Results}" />
+        </ScrollViewer>
+
+        <ListBox
+            Grid.Row="2"
+            Grid.IsSharedSizeScope="True"
+            IsVisible="False"
+            ItemsSource="{Binding Results}"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            SelectedItem="{Binding SelectedItem}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ShowGridLines="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" SharedSizeGroup="A" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="B" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="C" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="D" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="E" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="F" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="G" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="H" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            Padding="0"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Name}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Padding="4,0"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding FileSize}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Padding="4,0"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Crc32Hash}" />
+                        <TextBlock
+                            Grid.Column="3"
+                            Padding="4,0"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Md5Hash}" />
+                        <TextBlock
+                            Grid.Column="4"
+                            Padding="4,0"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Sha1Hash}" />
+                        <TextBlock
+                            Grid.Column="5"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Sha256Hash}" />
+                        <TextBlock
+                            Grid.Column="6"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Sha384Hash}" />
+                        <TextBlock
+                            Grid.Column="7"
+                            HorizontalAlignment="Stretch"
+                            FontSize="12"
+                            Text="{Binding Sha512Hash}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextFlyout>
+                <MenuFlyout>
+                    <MenuItem
+                        Command="{Binding CopySelectedCommand}"
+                        Header="Copy Checksums"
+                        HotKey="{OnPlatform Ctrl+C,
+                                            macOS=⌘+C}"
+                        InputGesture="{OnPlatform Ctrl+C,
+                                                  macOS=⌘+C}" />
+                </MenuFlyout>
+            </ListBox.ContextFlyout>
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="MinHeight" Value="{DynamicResource ListViewItemMinHeight}" />
+                </Style>
+            </ListBox.Styles>
+        </ListBox>
+
+        <DataGrid
+            Grid.Row="2"
+            Background="Transparent"
+            CanUserResizeColumns="True"
+            ClipboardCopyMode="None"
+            IsReadOnly="True"
+            ItemsSource="{Binding Results}"
+            SelectedItem="{Binding SelectedItem}">
+            <DataGrid.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <MultiBinding.Bindings>
+                        <Binding Path="ShowAsGrid" />
+                        <Binding Path="!!Results.Count" />
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </DataGrid.IsVisible>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Name}"
+                    FontSize="12"
+                    Header="Name"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding FileSize}"
+                    FontSize="12"
+                    Header="Size"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Crc32Hash}"
+                    FontSize="12"
+                    Header="CRC32"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Md5Hash}"
+                    FontSize="12"
+                    Header="MD5"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Sha1Hash}"
+                    FontSize="12"
+                    Header="SHA1"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Sha256Hash}"
+                    FontSize="12"
+                    Header="SHA256"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Sha384Hash}"
+                    FontSize="12"
+                    Header="SHA384"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Sha512Hash}"
+                    FontSize="12"
+                    Header="SHA512"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+            <DataGrid.ContextFlyout>
+                <MenuFlyout>
+                    <MenuItem
+                        x:Name="CopyToSelectedMenuItem"
+                        Command="{Binding CopySelectedCommand}"
+                        Header="Copy Checksums"
+                        HotKey="{OnPlatform Ctrl+C,
+                                            macOS=⌘+C}"
+                        InputGesture="{OnPlatform Ctrl+C,
+                                                  macOS=⌘+C}" />
+                </MenuFlyout>
+            </DataGrid.ContextFlyout>
+        </DataGrid>
+
+        <Border
+            Grid.Row="2"
+            Margin="18,12,24,12"
+            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="2"
+            CornerRadius="{DynamicResource ControlCornerRadius}"
+            IsVisible="{Binding !Results.Count}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="32"
+                Foreground="{DynamicResource TextFillColorDisabled}"
+                Text="Drop file(s) to calculate checksum(s)"
+                TextWrapping="Wrap" />
+        </Border>
+
+        <ProgressBar
+            Grid.Row="3"
+            MinHeight="8"
+            Margin="12"
+            IsVisible="{Binding IsCalculating}"
+            Maximum="100"
+            Minimum="0"
+            Value="{Binding TotalProgress}" />
+
+        <ui:InfoBar
+            Name="Bar1"
+            Title="About Checksum Calculator"
+            Grid.Row="4"
+            IsOpen="{Binding ShowAbout}"
+            Message="{Binding AboutMessage}"
+            Severity="Informational" />
+    </Grid>
+
+</Window>

@@ -1,0 +1,78 @@
+name: Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      matrix:
+        dotnet-runtime: [win-x64, win-arm64, win-x86, linux-x64, linux-arm64, osx-x64, osx-arm64]
+    runs-on: ubuntu-latest
+    env:
+      desktopFolderName: Woohoo.ChecksumCalculator.AvaloniaDesktop
+      desktopProjectName: Woohoo.ChecksumCalculator.AvaloniaDesktop.csproj
+      desktopBinariesName: Woohoo.ChecksumCalculator.AvaloniaDesktop-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
+      consoleFolderName: Woohoo.ChecksumCalculator.Cli
+      consoleProjectName: Woohoo.ChecksumCalculator.Cli.csproj
+      consoleBinariesName: Woohoo.ChecksumCalculator.Cli-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
+      frameworkVersion: net9.0
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Desktop App - Build / Publish
+      run: dotnet publish src/${{ env.desktopFolderName }}/${{ env.desktopProjectName }} -f ${{ env.frameworkVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+
+    - name: Console App - Build / Publish
+      run: dotnet publish src/${{ env.consoleFolderName }}/${{ env.consoleProjectName }} -f ${{ env.frameworkVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+
+    - name: Desktop App - Zip binaries
+      working-directory: ${{ github.workspace }}/bin/Release/${{ env.desktopFolderName }}/${{ env.frameworkVersion }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/bin/Release/${{ env.desktopFolderName }}/${{ env.frameworkVersion }}/${{ env.desktopBinariesName }}.zip *
+
+    - name: Console App - Zip binaries
+      working-directory: ${{ github.workspace }}/bin/Release/${{ env.consoleFolderName }}/${{ env.frameworkVersion }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/bin/Release/${{ env.consoleFolderName }}/${{ env.frameworkVersion }}/${{ env.consoleBinariesName }}.zip *
+
+    - name: Desktop App - Upload binaries artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: desktop-${{ matrix.dotnet-runtime }}
+        path: bin/Release/${{ env.desktopFolderName }}/${{ env.frameworkVersion }}/${{ env.desktopBinariesName }}.zip
+
+    - name: Console App - Upload binaries artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: console-${{ matrix.dotnet-runtime }}
+        path: bin/Release/${{ env.consoleFolderName }}/${{ env.frameworkVersion }}/${{ env.consoleBinariesName }}.zip
+
+  release:
+    name: Upload Release Assets
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Download binaries artifacts for all runtimes
+      uses: actions/download-artifact@v4
+      with:
+        path: release-artifacts
+        merge-multiple: true
+
+    - name: Display downloaded artifacts
+      run: ls -R release-artifacts
+
+    - name: Upload to release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          release-artifacts/*
