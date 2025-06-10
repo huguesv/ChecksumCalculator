@@ -258,7 +258,7 @@
             AllowAutoHide="False"
             IsVisible="{Binding !ShowAsGrid}">
             <ItemsControl
-                Margin="18,12,24,12"
+                Margin="24,12,24,12"
                 AutomationProperties.Name="Results"
                 IsVisible="{Binding !!Results.Count}"
                 ItemsSource="{Binding Results}" />
@@ -432,7 +432,7 @@
 
         <Border
             Grid.Row="2"
-            Margin="18,12,24,12"
+            Margin="24,12,24,12"
             BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
             BorderThickness="2"
             CornerRadius="{DynamicResource ControlCornerRadius}"
@@ -467,7 +467,9 @@
             Name="Bar1"
             Title="About Checksum Calculator"
             Grid.Row="4"
-            IsOpen="{Binding ShowAbout}"
+            Margin="24,12,24,12"
+            IsOpen="{Binding ShowAbout, Mode=OneWay}"
+            IsVisible="{Binding ShowAbout, Mode=OneWay}"
             Message="{Binding AboutMessage}"
             Severity="Informational" />
     </Grid>
