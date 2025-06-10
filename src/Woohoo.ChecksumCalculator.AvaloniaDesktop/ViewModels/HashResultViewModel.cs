@@ -8,8 +8,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 public partial class HashResultViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string algorithm = string.Empty;
+    public partial string Algorithm { get; set; } = string.Empty;
 
     [ObservableProperty]
-    private string value = string.Empty;
+    public partial string Value { get; set; } = string.Empty;
 }

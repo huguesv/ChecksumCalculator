@@ -26,51 +26,6 @@ public partial class MainWindowViewModel : ObservableObject
     private readonly ITaskbarService taskbarService;
     private readonly BackgroundWorker worker;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SelectFilesCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ToggleAlgorithmCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ClearCommand))]
-    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-    private bool isCalculating = false;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CopySelectedCommand))]
-    private FileResultViewModel? selectedItem = null;
-
-    [ObservableProperty]
-    private bool showAbout = false;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CollapseAllCommand))]
-    private bool showAsGrid = true;
-
-    [ObservableProperty]
-    private bool showToolbar = false;
-
-    [ObservableProperty]
-    private int fileProgress;
-
-    [ObservableProperty]
-    private int totalProgress;
-
-    [ObservableProperty]
-    private bool hashCrc32 = true;
-
-    [ObservableProperty]
-    private bool hashMd5 = true;
-
-    [ObservableProperty]
-    private bool hashSha1 = true;
-
-    [ObservableProperty]
-    private bool hashSha256 = false;
-
-    [ObservableProperty]
-    private bool hashSha384 = false;
-
-    [ObservableProperty]
-    private bool hashSha512 = false;
-
     public MainWindowViewModel(
         IFileExplorerService fileExplorerService,
         IClipboardService clipboardService,
@@ -89,6 +44,51 @@ public partial class MainWindowViewModel : ObservableObject
         this.worker.WorkerReportsProgress = true;
         this.worker.WorkerSupportsCancellation = true;
     }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SelectFilesCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ToggleAlgorithmCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ClearCommand))]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    public partial bool IsCalculating { get; set; } = false;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CopySelectedCommand))]
+    public partial FileResultViewModel? SelectedItem { get; set; } = null;
+
+    [ObservableProperty]
+    public partial bool ShowAbout { get; set; } = false;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CollapseAllCommand))]
+    public partial bool ShowAsGrid { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowToolbar { get; set; } = false;
+
+    [ObservableProperty]
+    public partial int FileProgress { get; set; }
+
+    [ObservableProperty]
+    public partial int TotalProgress { get; set; }
+
+    [ObservableProperty]
+    public partial bool HashCrc32 { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool HashMd5 { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool HashSha1 { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool HashSha256 { get; set; } = false;
+
+    [ObservableProperty]
+    public partial bool HashSha384 { get; set; } = false;
+
+    [ObservableProperty]
+    public partial bool HashSha512 { get; set; } = false;
 
     public ObservableCollection<FileResultViewModel> Results { get; set; } = [];
 
