@@ -94,7 +94,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     public bool ShowMenu { get; } = !RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-    public string AboutMessage => $"Version {Assembly.GetExecutingAssembly().GetName().Version} by Hugues Valois";
+    public string AboutMessage => string.Format(Localized.AboutInfo_VersionFormat, Assembly.GetExecutingAssembly().GetName().Version);
 
     [RelayCommand(CanExecute = nameof(CanCopySelected))]
     public void CopySelected()

@@ -70,6 +70,15 @@ namespace Woohoo.ChecksumCalculator.AvaloniaDesktop {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Version {0} by Hugues Valois.
+        /// </summary>
+        public static string AboutInfo_VersionFormat {
+            get {
+                return ResourceManager.GetString("AboutInfo_VersionFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checksum Calculator.
         /// </summary>
         public static string AboutWindow_Caption {
