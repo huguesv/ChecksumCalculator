@@ -59,9 +59,6 @@ public partial class FileResultViewModel : ObservableObject
     {
         this.fileExplorerService = fileExplorerService;
         this.clipboardService = clipboardService;
-
-        this.BrowseCommand = new RelayCommand(this.Browse);
-        this.CopyCommand = new RelayCommand(this.Copy);
     }
 
     public string Name => Path.GetFileName(this.FullPath) ?? string.Empty;
@@ -72,15 +69,13 @@ public partial class FileResultViewModel : ObservableObject
 
     public Guid Id { get; init; }
 
-    public IRelayCommand BrowseCommand { get; }
-
-    public IRelayCommand CopyCommand { get; }
-
+    [RelayCommand]
     public void Browse()
     {
         this.fileExplorerService.OpenInExplorer(this.FullPath);
     }
 
+    [RelayCommand]
     public void Copy()
     {
         var current = new StringBuilder();

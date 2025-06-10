@@ -446,14 +446,22 @@
                 TextWrapping="Wrap" />
         </Border>
 
-        <ProgressBar
-            Grid.Row="3"
-            MinHeight="8"
-            Margin="12"
-            IsVisible="{Binding IsCalculating}"
-            Maximum="100"
-            Minimum="0"
-            Value="{Binding TotalProgress}" />
+        <Grid Grid.Row="3" ColumnDefinitions="Auto,*">
+            <Button
+                Grid.Column="0"
+                Margin="12"
+                Command="{Binding CancelCommand, Mode=OneWay}"
+                Content="Cancel"
+                IsVisible="{Binding IsCalculating}" />
+            <ProgressBar
+                Grid.Column="1"
+                MinHeight="8"
+                Margin="12"
+                IsVisible="{Binding IsCalculating}"
+                Maximum="100"
+                Minimum="0"
+                Value="{Binding TotalProgress}" />
+        </Grid>
 
         <ui:InfoBar
             Name="Bar1"

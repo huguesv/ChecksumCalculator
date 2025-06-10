@@ -27,12 +27,21 @@ public partial class MainWindowViewModel : ObservableObject
     private readonly BackgroundWorker worker;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SelectFilesCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ToggleAlgorithmCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ClearCommand))]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isCalculating = false;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CopySelectedCommand))]
+    private FileResultViewModel? selectedItem = null;
 
     [ObservableProperty]
     private bool showAbout = false;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CollapseAllCommand))]
     private bool showAsGrid = true;
 
     [ObservableProperty]
@@ -62,9 +71,6 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty]
     private bool hashSha512 = false;
 
-    [ObservableProperty]
-    private FileResultViewModel? selectedItem = null;
-
     public MainWindowViewModel(
         IFileExplorerService fileExplorerService,
         IClipboardService clipboardService,
@@ -82,42 +88,15 @@ public partial class MainWindowViewModel : ObservableObject
         this.worker.RunWorkerCompleted += this.Worker_RunWorkerCompleted;
         this.worker.WorkerReportsProgress = true;
         this.worker.WorkerSupportsCancellation = true;
-
-        this.SelectFilesCommand = new AsyncRelayCommand(this.SelectFilesAsync, () => !this.IsCalculating);
-        this.ToggleAlgorithmCommand = new RelayCommand<string>(this.ToggleAlgorithm, (string? algo) => !this.IsCalculating);
-        this.CollapseAllCommand = new RelayCommand(this.CollapseAll, () => this.Results.Count > 0 && !this.ShowAsGrid);
-        this.ClearCommand = new RelayCommand(this.Clear, () => !this.IsCalculating && this.Results.Count > 0);
-        this.ToggleShowAsGridCommand = new RelayCommand(this.ToggleShowAsGrid, () => !this.IsCalculating);
-        this.ToggleShowToolbarCommand = new RelayCommand(this.ToggleShowToolbar);
-        this.AboutCommand = new RelayCommand(this.About, () => !this.IsCalculating);
-        this.CancelCommand = new RelayCommand(this.Cancel, () => this.IsCalculating);
-        this.CopySelectedCommand = new RelayCommand(this.CopySelected, () => this.SelectedItem is not null);
     }
 
     public ObservableCollection<FileResultViewModel> Results { get; set; } = [];
-
-    public IAsyncRelayCommand SelectFilesCommand { get; }
-
-    public IRelayCommand ToggleAlgorithmCommand { get; }
-
-    public IRelayCommand CollapseAllCommand { get; }
-
-    public IRelayCommand ClearCommand { get; }
-
-    public IRelayCommand ToggleShowAsGridCommand { get; }
-
-    public IRelayCommand ToggleShowToolbarCommand { get; }
-
-    public IRelayCommand AboutCommand { get; }
-
-    public IRelayCommand CancelCommand { get; }
-
-    public IRelayCommand CopySelectedCommand { get; }
 
     public bool ShowMenu { get; } = !RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
     public string AboutMessage => $"Version {Assembly.GetExecutingAssembly().GetName().Version} by Hugues Valois";
 
+    [RelayCommand(CanExecute = nameof(CanCopySelected))]
     public void CopySelected()
     {
         if (this.SelectedItem is not null)
@@ -126,6 +105,9 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    public bool CanCopySelected() => this.SelectedItem is not null;
+
+    [RelayCommand(CanExecute = nameof(CanSelectFiles))]
     public async Task SelectFilesAsync()
     {
         var filePaths = await this.filePickerService.GetFilePathsAsync(true);
@@ -135,6 +117,9 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    public bool CanSelectFiles() => !this.IsCalculating;
+
+    [RelayCommand(CanExecute = nameof(CanToggleAlgorithm))]
     public void ToggleAlgorithm(string? algo)
     {
         switch (algo?.ToLower())
@@ -163,6 +148,9 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    public bool CanToggleAlgorithm(string? algo) => !this.IsCalculating;
+
+    [RelayCommand(CanExecute = nameof(CanCollapseAll))]
     public void CollapseAll()
     {
         foreach (var result in this.Results)
@@ -171,6 +159,9 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    public bool CanCollapseAll() => this.Results.Count > 0 && !this.ShowAsGrid;
+
+    [RelayCommand(CanExecute = nameof(CanClear))]
     public void Clear()
     {
         this.Results.Clear();
@@ -178,16 +169,21 @@ public partial class MainWindowViewModel : ObservableObject
         this.ClearCommand.NotifyCanExecuteChanged();
     }
 
+    public bool CanClear() => !this.IsCalculating && this.Results.Count > 0;
+
+    [RelayCommand]
     public void ToggleShowAsGrid()
     {
         this.ShowAsGrid = !this.ShowAsGrid;
     }
 
+    [RelayCommand]
     public void ToggleShowToolbar()
     {
         this.ShowToolbar = !this.ShowToolbar;
     }
 
+    [RelayCommand]
     public void About()
     {
         // Dismissing it does not reset it to false,
@@ -196,6 +192,7 @@ public partial class MainWindowViewModel : ObservableObject
         this.ShowAbout = true;
     }
 
+    [RelayCommand(CanExecute = nameof(CanCancel))]
     public void Cancel()
     {
         if (!this.IsCalculating)
@@ -205,6 +202,8 @@ public partial class MainWindowViewModel : ObservableObject
 
         this.worker.CancelAsync();
     }
+
+    public bool CanCancel() => this.IsCalculating;
 
     public IEnumerable<string> GetHashNames()
     {
@@ -251,17 +250,7 @@ public partial class MainWindowViewModel : ObservableObject
 
         this.IsCalculating = true;
 
-        this.NotifyCalculatingChanged();
-
         this.worker.RunWorkerAsync(new Tuple<string[], string[]>(hashNames, existingFilePaths));
-    }
-
-    private void NotifyCalculatingChanged()
-    {
-        this.SelectFilesCommand.NotifyCanExecuteChanged();
-        this.ClearCommand.NotifyCanExecuteChanged();
-        this.AboutCommand.NotifyCanExecuteChanged();
-        this.CancelCommand.NotifyCanExecuteChanged();
     }
 
     private void Worker_DoWork(object? sender, DoWorkEventArgs e)
@@ -418,8 +407,6 @@ public partial class MainWindowViewModel : ObservableObject
                 result.IsCalculating = false;
             }
         }
-
-        this.NotifyCalculatingChanged();
     }
 
     private class ChecksumProgress
