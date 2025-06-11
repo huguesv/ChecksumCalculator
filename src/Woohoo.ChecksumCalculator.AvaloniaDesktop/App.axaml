@@ -7,17 +7,19 @@
     Name="Checksum Calculator"
     RequestedThemeVariant="Default">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
+
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
-    <!--  When not using FluentAvalonia, the styles for the datagrid are provided separately  -->
-    <!--<Application.Styles>
-        <FluentTheme />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
-    </Application.Styles>-->
 
-    <!--  When using FluentAvalonia, the styles for the datagrid are built-in  -->
     <Application.Styles>
-        <sty:FluentAvaloniaTheme />
+        <OnPlatform>
+            <OnPlatform.Default>
+                <FluentTheme />
+            </OnPlatform.Default>
+            <OnPlatform.Windows>
+                <sty:FluentAvaloniaTheme />
+            </OnPlatform.Windows>
+        </OnPlatform>
     </Application.Styles>
 </Application>

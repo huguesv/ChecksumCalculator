@@ -383,15 +383,13 @@
         <Border
             Grid.Row="1"
             Margin="24,12,24,12"
-            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
-            BorderThickness="2"
-            CornerRadius="{DynamicResource ControlCornerRadius}"
+            BorderThickness="0"
             IsVisible="{Binding !Results.Count}">
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="32"
-                Foreground="{DynamicResource TextFillColorDisabled}"
+                FontWeight="ExtraLight"
                 Text="Select file(s) to calculate checksum(s)"
                 TextWrapping="Wrap" />
         </Border>

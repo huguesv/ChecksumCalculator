@@ -8,6 +8,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Themes.Fluent;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using Woohoo.ChecksumCalculator.AvaloniaDesktop.Services;
@@ -16,6 +18,8 @@ using Woohoo.ChecksumCalculator.AvaloniaDesktop.Views;
 
 public partial class App : Application
 {
+    private const string DataGridStyle = "avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml";
+
     public static TopLevel? GetTopLevel(Application app)
     {
         if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -35,6 +39,14 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+        if (this.Styles.Count == 1 && this.Styles[0] is FluentTheme)
+        {
+            this.Styles.Add(new StyleInclude(new System.Uri(DataGridStyle))
+            {
+                Source = new System.Uri(DataGridStyle),
+            });
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()
