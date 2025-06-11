@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:FluentAvalonia.UI.Controls"
-    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
     xmlns:vm="using:Woohoo.ChecksumCalculator.AvaloniaDesktop.ViewModels"
     xmlns:vmd="using:Woohoo.ChecksumCalculator.AvaloniaDesktop.ViewModels.DesignTime"
     Title="Checksum Calculator"
@@ -34,6 +33,17 @@
         <vmd:DesignMainWindowViewModel />
     </Design.DataContext>
 
+    <Window.Resources>
+        <Canvas
+            x:Key="InfoIcon"
+            Width="32"
+            Height="32">
+            <Path Data="M17.534 10.6674C17.534 11.5143 16.8475 12.2008 16.0006 12.2008C15.1538 12.2008 14.4673 11.5143 14.4673 10.6674C14.4673 9.82061 15.1538 9.13411 16.0006 9.13411C16.8475 9.13411 17.534 9.82061 17.534 10.6674Z" Fill="{DynamicResource SystemAccentColor}" />
+            <Path Data="M14.6678 14.2005C14.6678 13.8323 14.9663 13.5339 15.3345 13.5339H16.6678C17.036 13.5339 17.3345 13.8323 17.3345 14.2005V22.2005C17.3345 22.5687 17.036 22.8672 16.6678 22.8672H15.3345C14.9663 22.8672 14.6678 22.5687 14.6678 22.2005V14.2005Z" Fill="{DynamicResource SystemAccentColor}" />
+            <Path Data="M28 16C28 22.6274 22.6274 28 16 28C9.37258 28 4 22.6274 4 16C4 9.37258 9.37258 4 16 4C22.6274 4 28 9.37258 28 16ZM24.9333 16C24.9333 20.9337 20.9337 24.9333 16 24.9333C11.0663 24.9333 7.06667 20.9337 7.06667 16C7.06667 11.0663 11.0663 7.06667 16 7.06667C20.9337 7.06667 24.9333 11.0663 24.9333 16Z" Fill="{DynamicResource SystemAccentColor}" />
+        </Canvas>
+    </Window.Resources>
+
     <NativeMenu.Menu>
         <NativeMenu>
             <NativeMenuItem Header="File">
@@ -48,11 +58,6 @@
             </NativeMenuItem>
             <NativeMenuItem Header="View">
                 <NativeMenu>
-                    <NativeMenuItem
-                        Command="{Binding ToggleShowToolbarCommand}"
-                        Header="Show Toolbar"
-                        IsChecked="{Binding ShowToolbar}"
-                        ToggleType="CheckBox" />
                     <NativeMenuItem
                         Command="{Binding ToggleShowAsGridCommand}"
                         Header="Show As Grid"
@@ -111,7 +116,7 @@
         </NativeMenu>
     </NativeMenu.Menu>
 
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
         <Menu Grid.Row="0" IsVisible="{Binding ShowMenu}">
             <MenuItem Header="File">
                 <MenuItem
@@ -134,11 +139,6 @@
                                               macOS=⌘+C}" />
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem
-                    Command="{Binding ToggleShowToolbarCommand}"
-                    Header="Show Toolbar"
-                    IsChecked="{Binding ShowToolbar}"
-                    ToggleType="CheckBox" />
                 <MenuItem
                     Command="{Binding ToggleShowAsGridCommand}"
                     Header="Show As Grid"
@@ -203,58 +203,8 @@
             </MenuItem>
         </Menu>
 
-        <ui:CommandBar
-            Grid.Row="1"
-            DefaultLabelPosition="Right"
-            IsVisible="{Binding ShowToolbar}">
-            <ui:CommandBar.PrimaryCommands>
-                <ui:CommandBarButton
-                    AutomationProperties.Name="Select Files"
-                    Command="{Binding SelectFilesCommand}"
-                    Label="Select File(s)..." />
-                <ui:CommandBarSeparator />
-                <ui:CommandBarButton
-                    AutomationProperties.Name="Collapse All"
-                    Command="{Binding CollapseAllCommand}"
-                    Label="Collapse All" />
-                <ui:CommandBarButton
-                    AutomationProperties.Name="Clear"
-                    Command="{Binding ClearCommand}"
-                    Label="Clear" />
-                <ui:CommandBarButton
-                    AutomationProperties.Name="About"
-                    Command="{Binding AboutCommand}"
-                    Label="About" />
-                <ui:CommandBarSeparator />
-                <ui:CommandBarToggleButton
-                    AutomationProperties.Name="CRC32"
-                    IsChecked="{Binding HashCrc32}"
-                    Label="CRC32" />
-                <ui:CommandBarToggleButton
-                    AutomationProperties.Name="MD5"
-                    IsChecked="{Binding HashMd5}"
-                    Label="MD5" />
-                <ui:CommandBarToggleButton
-                    AutomationProperties.Name="SHA1"
-                    IsChecked="{Binding HashSha1}"
-                    Label="SHA1" />
-                <ui:CommandBarToggleButton
-                    AutomationProperties.Name="SHA256"
-                    IsChecked="{Binding HashSha256}"
-                    Label="SHA256" />
-                <ui:CommandBarToggleButton
-                    AutomationProperties.Name="SHA384"
-                    IsChecked="{Binding HashSha384}"
-                    Label="SHA384" />
-                <ui:CommandBarToggleButton
-                    AutomationProperties.Name="SHA512"
-                    IsChecked="{Binding HashSha512}"
-                    Label="SHA512" />
-            </ui:CommandBar.PrimaryCommands>
-        </ui:CommandBar>
-
         <ScrollViewer
-            Grid.Row="2"
+            Grid.Row="1"
             AllowAutoHide="False"
             IsVisible="{Binding !ShowAsGrid}">
             <ItemsControl
@@ -265,7 +215,7 @@
         </ScrollViewer>
 
         <ListBox
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.IsSharedSizeScope="True"
             IsVisible="False"
             ItemsSource="{Binding Results}"
@@ -351,7 +301,7 @@
         </ListBox>
 
         <DataGrid
-            Grid.Row="2"
+            Grid.Row="1"
             Background="Transparent"
             CanUserResizeColumns="True"
             ClipboardCopyMode="None"
@@ -431,7 +381,7 @@
         </DataGrid>
 
         <Border
-            Grid.Row="2"
+            Grid.Row="1"
             Margin="24,12,24,12"
             BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
             BorderThickness="2"
@@ -442,11 +392,11 @@
                 VerticalAlignment="Center"
                 FontSize="32"
                 Foreground="{DynamicResource TextFillColorDisabled}"
-                Text="Drop file(s) to calculate checksum(s)"
+                Text="Select file(s) to calculate checksum(s)"
                 TextWrapping="Wrap" />
         </Border>
 
-        <Grid Grid.Row="3" ColumnDefinitions="Auto,*">
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*">
             <Button
                 Grid.Column="0"
                 Margin="12"
@@ -463,15 +413,44 @@
                 Value="{Binding TotalProgress}" />
         </Grid>
 
-        <ui:InfoBar
-            Name="Bar1"
-            Title="About Checksum Calculator"
-            Grid.Row="4"
+        <Border
+            Grid.Row="3"
             Margin="24,12,24,12"
-            IsOpen="{Binding ShowAbout, Mode=OneWay}"
-            IsVisible="{Binding ShowAbout, Mode=OneWay}"
-            Message="{Binding AboutMessage}"
-            Severity="Informational" />
+            BorderBrush="{DynamicResource SystemAccentColor}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource ControlCornerRadius}"
+            IsVisible="{Binding ShowAbout, Mode=OneWay}">
+            <Grid
+                Margin="12"
+                ColumnDefinitions="Auto,*,Auto"
+                RowDefinitions="Auto,Auto">
+                <Canvas
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Width="32"
+                    Height="32"
+                    Margin="0,0,12,0">
+                    <StaticResource ResourceKey="InfoIcon" />
+                </Canvas>
+                <TextBlock
+                    Grid.Column="1"
+                    FontWeight="Bold"
+                    Text="About Checksum Calculator"
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="0,8,0,0"
+                    Text="{Binding AboutMessage, Mode=OneWay}"
+                    TextWrapping="Wrap" />
+                <Button
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Margin="12,0,0,0"
+                    Command="{Binding DismissAboutCommand, Mode=OneWay}"
+                    Content="OK" />
+            </Grid>
+        </Border>
     </Grid>
 
 </Window>

@@ -7,7 +7,9 @@
     Name="Checksum Calculator"
     RequestedThemeVariant="Default">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
-
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
     <!--  When not using FluentAvalonia, the styles for the datagrid are provided separately  -->
     <!--<Application.Styles>
         <FluentTheme />

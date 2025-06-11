@@ -64,9 +64,6 @@ public partial class MainWindowViewModel : ObservableObject
     public partial bool ShowAsGrid { get; set; } = true;
 
     [ObservableProperty]
-    public partial bool ShowToolbar { get; set; } = false;
-
-    [ObservableProperty]
     public partial int FileProgress { get; set; }
 
     [ObservableProperty]
@@ -178,18 +175,15 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void ToggleShowToolbar()
+    public void About()
     {
-        this.ShowToolbar = !this.ShowToolbar;
+        this.ShowAbout = true;
     }
 
     [RelayCommand]
-    public void About()
+    public void DismissAbout()
     {
-        // Dismissing it does not reset it to false,
-        // so cycle false/true to ensure it is shown.
         this.ShowAbout = false;
-        this.ShowAbout = true;
     }
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
