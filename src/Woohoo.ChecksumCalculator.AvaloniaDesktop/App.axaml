@@ -21,7 +21,7 @@
                 <sty:FluentAvaloniaTheme />
             </OnPlatform.Windows>
             <OnPlatform.macOS>
-                <StyleInclude Source="avares://Devolutions.AvaloniaTheme.MacOS/MacOSTheme.axaml" />
+                <DevolutionsMacOsTheme />
             </OnPlatform.macOS>
         </OnPlatform>
     </Application.Styles>
