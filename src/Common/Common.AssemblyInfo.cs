@@ -8,5 +8,5 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Copyright (c) Hugues Valois 2008-2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.2.0.0")]
-[assembly: AssemblyFileVersion("0.2.0.0")]
+[assembly: AssemblyVersion("0.3.0.0")]
+[assembly: AssemblyFileVersion("0.3.0.0")]
