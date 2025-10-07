@@ -23,14 +23,14 @@ public partial class MainWindow : Window
 
     public void OnDrop(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.Files))
+        if (e.DataTransfer.Contains(DataFormat.File))
         {
-            var files = e.Data.GetFiles() ?? Array.Empty<IStorageItem>();
             var filePaths = new List<string>();
 
-            foreach (var item in files)
+            foreach (var item in e.DataTransfer.Items)
             {
-                if (item is IStorageFile file)
+                var raw = item.TryGetRaw(DataFormat.File);
+                if (raw is IStorageFile file)
                 {
                     string? path = file.TryGetLocalPath();
                     if (!string.IsNullOrEmpty(path))
@@ -38,7 +38,7 @@ public partial class MainWindow : Window
                         filePaths.Add(path);
                     }
                 }
-                else if (item is IStorageFolder folder)
+                else if (raw is IStorageFolder folder)
                 {
                     string? path = folder.TryGetLocalPath();
                     if (!string.IsNullOrEmpty(path))
