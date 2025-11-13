@@ -12,13 +12,14 @@ jobs:
         dotnet-runtime: [win-x64, win-arm64, win-x86, linux-x64, linux-arm64, osx-x64, osx-arm64]
     runs-on: ubuntu-latest
     env:
+      dotnetActionVersion: '10.0.x'
+      dotnetBuildVersion: 'net10.0'
       desktopFolderName: Woohoo.ChecksumCalculator.AvaloniaDesktop
       desktopProjectName: Woohoo.ChecksumCalculator.AvaloniaDesktop.csproj
       desktopBinariesName: Woohoo.ChecksumCalculator.AvaloniaDesktop-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
       consoleFolderName: Woohoo.ChecksumCalculator.Cli
       consoleProjectName: Woohoo.ChecksumCalculator.Cli.csproj
       consoleBinariesName: Woohoo.ChecksumCalculator.Cli-${{ github.event.release.tag_name }}-${{ matrix.dotnet-runtime }}
-      frameworkVersion: net9.0
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -26,33 +27,35 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: ${{ env.dotnetActionVersion }}
 
     - name: Desktop App - Build / Publish
-      run: dotnet publish src/${{ env.desktopFolderName }}/${{ env.desktopProjectName }} -f ${{ env.frameworkVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+      working-directory: src
+      run: dotnet publish ${{ env.desktopFolderName }}/${{ env.desktopProjectName }} -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
     - name: Console App - Build / Publish
-      run: dotnet publish src/${{ env.consoleFolderName }}/${{ env.consoleProjectName }} -f ${{ env.frameworkVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=False
+      working-directory: src
+      run: dotnet publish ${{ env.consoleFolderName }}/${{ env.consoleProjectName }} -f ${{ env.dotnetBuildVersion }} -r ${{ matrix.dotnet-runtime }} -c Release --self-contained -p:DebugType=None -p:DebugSymbols=False
 
     - name: Desktop App - Zip binaries
-      working-directory: ${{ github.workspace }}/bin/Release/${{ env.desktopFolderName }}/${{ env.frameworkVersion }}/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/bin/Release/${{ env.desktopFolderName }}/${{ env.frameworkVersion }}/${{ env.desktopBinariesName }}.zip *
+      working-directory: src/${{ env.desktopFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/src/${{ env.desktopFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip *
 
     - name: Console App - Zip binaries
-      working-directory: ${{ github.workspace }}/bin/Release/${{ env.consoleFolderName }}/${{ env.frameworkVersion }}/${{ matrix.dotnet-runtime }}/publish
-      run: zip -r ${{ github.workspace }}/bin/Release/${{ env.consoleFolderName }}/${{ env.frameworkVersion }}/${{ env.consoleBinariesName }}.zip *
+      working-directory: src/${{ env.consoleFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ matrix.dotnet-runtime }}/publish
+      run: zip -r ${{ github.workspace }}/src/${{ env.consoleFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip *
 
     - name: Desktop App - Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
         name: desktop-${{ matrix.dotnet-runtime }}
-        path: bin/Release/${{ env.desktopFolderName }}/${{ env.frameworkVersion }}/${{ env.desktopBinariesName }}.zip
+        path: src/${{ env.desktopFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip
 
     - name: Console App - Upload binaries artifact
       uses: actions/upload-artifact@v4
       with:
         name: console-${{ matrix.dotnet-runtime }}
-        path: bin/Release/${{ env.consoleFolderName }}/${{ env.frameworkVersion }}/${{ env.consoleBinariesName }}.zip
+        path: src/${{ env.consoleFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip
 
   release:
     name: Upload Release Assets
