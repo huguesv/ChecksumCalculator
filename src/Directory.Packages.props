@@ -17,6 +17,6 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
-    <PackageVersion Include="Woohoo.Security.Cryptography" Version="0.3.0" />
+    <PackageVersion Include="Woohoo.Security.Cryptography" Version="0.4.0" />
   </ItemGroup>
 </Project>
