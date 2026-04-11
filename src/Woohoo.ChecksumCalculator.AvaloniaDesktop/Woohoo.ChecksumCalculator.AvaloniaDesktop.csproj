@@ -33,6 +33,8 @@
     </PackageReference>
     <PackageReference Include="Woohoo.Platform.Windows" />
     <PackageReference Include="Woohoo.Security.Cryptography" />
+    <!-- Explicit reference to override vulnerable transitive dependency -->
+    <PackageReference Include="Tmds.DBus.Protocol" />
   </ItemGroup>
 
 

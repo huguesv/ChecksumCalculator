@@ -18,5 +18,7 @@
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
     <PackageVersion Include="Woohoo.Platform.Windows" Version="0.1.0" />
     <PackageVersion Include="Woohoo.Security.Cryptography" Version="0.5.0" />
+    <!-- Pin transitive package to address vulnerabilities -->
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.92.0" />
   </ItemGroup>
 </Project>
