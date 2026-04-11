@@ -17,10 +17,11 @@
             <OnPlatform.Default>
                 <FluentTheme />
             </OnPlatform.Default>
+<!--        Disabled until FluentAvalonia supports Avalonia 12
             <OnPlatform.Windows>
                 <sty:FluentAvaloniaTheme />
             </OnPlatform.Windows>
-            <OnPlatform.macOS>
+-->            <OnPlatform.macOS>
                 <DevolutionsMacOsTheme />
             </OnPlatform.macOS>
         </OnPlatform>

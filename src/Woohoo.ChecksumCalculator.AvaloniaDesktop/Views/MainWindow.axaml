@@ -18,10 +18,10 @@
     mc:Ignorable="d">
 
     <Window.KeyBindings>
-        <KeyBinding Command="{Binding SelectFilesCommand}" Gesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
-        <KeyBinding Command="{Binding CopySelectedCommand}" Gesture="{OnPlatform Ctrl+C, macOS=⌘+C}" />
-        <KeyBinding Command="{Binding ClearCommand}" Gesture="{OnPlatform Ctrl+L, macOS=⌘+L}" />
-        <KeyBinding Command="{Binding CollapseAllCommand}" Gesture="{OnPlatform Ctrl+-, macOS=⌘+-}" />
+        <KeyBinding Command="{Binding SelectFilesCommand, Mode=OneWay}" Gesture="{OnPlatform Ctrl+O, macOS=⌘+O}" />
+        <KeyBinding Command="{Binding CopySelectedCommand, Mode=OneWay}" Gesture="{OnPlatform Ctrl+C, macOS=⌘+C}" />
+        <KeyBinding Command="{Binding ClearCommand, Mode=OneWay}" Gesture="{OnPlatform Ctrl+L, macOS=⌘+L}" />
+        <KeyBinding Command="{Binding CollapseAllCommand, Mode=OneWay}" Gesture="{OnPlatform Ctrl+-, macOS=⌘+-}" />
     </Window.KeyBindings>
 
     <!--
@@ -48,79 +48,79 @@
         <NativeMenu>
             <NativeMenuItem Header="File">
                 <NativeMenu>
-                    <NativeMenuItem Command="{Binding SelectFilesCommand}" Header="Select Files(s)..." />
+                    <NativeMenuItem Command="{Binding SelectFilesCommand, Mode=OneWay}" Header="Select Files(s)..." />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="Clipboard">
                 <NativeMenu>
-                    <NativeMenuItem Command="{Binding CopySelectedCommand}" Header="Copy Checksums" />
+                    <NativeMenuItem Command="{Binding CopySelectedCommand, Mode=OneWay}" Header="Copy Checksums" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="View">
                 <NativeMenu>
                     <NativeMenuItem
-                        Command="{Binding ToggleShowAsGridCommand}"
+                        Command="{Binding ToggleShowAsGridCommand, Mode=OneWay}"
                         Header="Show As Grid"
-                        IsChecked="{Binding ShowAsGrid}"
+                        IsChecked="{Binding ShowAsGrid, Mode=OneWay}"
                         ToggleType="CheckBox" />
                     <NativeMenuItemSeparator />
-                    <NativeMenuItem Command="{Binding CollapseAllCommand}" Header="Collapse All" />
-                    <NativeMenuItem Command="{Binding ClearCommand}" Header="Clear" />
+                    <NativeMenuItem Command="{Binding CollapseAllCommand, Mode=OneWay}" Header="Collapse All" />
+                    <NativeMenuItem Command="{Binding ClearCommand, Mode=OneWay}" Header="Clear" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="Algorithms">
                 <NativeMenu>
                     <NativeMenuItem
-                        Command="{Binding ToggleAlgorithmCommand}"
+                        Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                         CommandParameter="CRC32"
                         Header="CRC32"
-                        IsChecked="{Binding HashCrc32}"
+                        IsChecked="{Binding HashCrc32, Mode=OneWay}"
                         ToggleType="CheckBox" />
                     <NativeMenuItem
-                        Command="{Binding ToggleAlgorithmCommand}"
+                        Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                         CommandParameter="MD5"
                         Header="MD5"
-                        IsChecked="{Binding HashMd5}"
+                        IsChecked="{Binding HashMd5, Mode=OneWay}"
                         ToggleType="CheckBox" />
                     <NativeMenuItem
-                        Command="{Binding ToggleAlgorithmCommand}"
+                        Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                         CommandParameter="SHA1"
                         Header="SHA1"
-                        IsChecked="{Binding HashSha1}"
+                        IsChecked="{Binding HashSha1, Mode=OneWay}"
                         ToggleType="CheckBox" />
                     <NativeMenuItem
-                        Command="{Binding ToggleAlgorithmCommand}"
+                        Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                         CommandParameter="SHA256"
                         Header="SHA256"
-                        IsChecked="{Binding HashSha256}"
+                        IsChecked="{Binding HashSha256, Mode=OneWay}"
                         ToggleType="CheckBox" />
                     <NativeMenuItem
-                        Command="{Binding ToggleAlgorithmCommand}"
+                        Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                         CommandParameter="SHA384"
                         Header="SHA384"
-                        IsChecked="{Binding HashSha384}"
+                        IsChecked="{Binding HashSha384, Mode=OneWay}"
                         ToggleType="CheckBox" />
                     <NativeMenuItem
-                        Command="{Binding ToggleAlgorithmCommand}"
+                        Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                         CommandParameter="SHA512"
                         Header="SHA512"
-                        IsChecked="{Binding HashSha512}"
+                        IsChecked="{Binding HashSha512, Mode=OneWay}"
                         ToggleType="CheckBox" />
                 </NativeMenu>
             </NativeMenuItem>
             <NativeMenuItem Header="Help">
                 <NativeMenu>
-                    <NativeMenuItem Command="{Binding AboutCommand}" Header="About" />
+                    <NativeMenuItem Command="{Binding AboutCommand, Mode=OneWay}" Header="About" />
                 </NativeMenu>
             </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
 
     <Grid RowDefinitions="Auto,*,Auto,Auto">
-        <Menu Grid.Row="0" IsVisible="{Binding ShowMenu}">
+        <Menu Grid.Row="0" IsVisible="{Binding ShowMenu, Mode=OneWay}">
             <MenuItem Header="File">
                 <MenuItem
-                    Command="{Binding SelectFilesCommand}"
+                    Command="{Binding SelectFilesCommand, Mode=OneWay}"
                     Header="Select File(s)..."
                     HotKey="{OnPlatform Ctrl+O,
                                         macOS=⌘+O}"
@@ -131,7 +131,7 @@
             </MenuItem>
             <MenuItem Header="Clipboard">
                 <MenuItem
-                    Command="{Binding CopySelectedCommand}"
+                    Command="{Binding CopySelectedCommand, Mode=OneWay}"
                     Header="Copy Checksums"
                     HotKey="{OnPlatform Ctrl+C,
                                         macOS=⌘+C}"
@@ -140,20 +140,20 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem
-                    Command="{Binding ToggleShowAsGridCommand}"
+                    Command="{Binding ToggleShowAsGridCommand, Mode=OneWay}"
                     Header="Show As Grid"
-                    IsChecked="{Binding ShowAsGrid}"
+                    IsChecked="{Binding ShowAsGrid, Mode=OneWay}"
                     ToggleType="CheckBox" />
                 <Separator />
                 <MenuItem
-                    Command="{Binding CollapseAllCommand}"
+                    Command="{Binding CollapseAllCommand, Mode=OneWay}"
                     Header="Collapse All"
                     HotKey="{OnPlatform Ctrl+-,
                                         macOS=⌘+-}"
                     InputGesture="{OnPlatform Ctrl+-,
                                               macOS=⌘+-}" />
                 <MenuItem
-                    Command="{Binding ClearCommand}"
+                    Command="{Binding ClearCommand, Mode=OneWay}"
                     Header="Clear"
                     HotKey="{OnPlatform Ctrl+L,
                                         macOS=⌘+L}"
@@ -162,65 +162,65 @@
             </MenuItem>
             <MenuItem Header="Algorithms">
                 <MenuItem
-                    Command="{Binding ToggleAlgorithmCommand}"
+                    Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                     CommandParameter="CRC32"
                     Header="CRC32"
-                    IsChecked="{Binding HashCrc32}"
+                    IsChecked="{Binding HashCrc32, Mode=OneWay}"
                     ToggleType="CheckBox" />
                 <MenuItem
-                    Command="{Binding ToggleAlgorithmCommand}"
+                    Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                     CommandParameter="MD5"
                     Header="MD5"
-                    IsChecked="{Binding HashMd5}"
+                    IsChecked="{Binding HashMd5, Mode=OneWay}"
                     ToggleType="CheckBox" />
                 <MenuItem
-                    Command="{Binding ToggleAlgorithmCommand}"
+                    Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                     CommandParameter="SHA1"
                     Header="SHA1"
-                    IsChecked="{Binding HashSha1}"
+                    IsChecked="{Binding HashSha1, Mode=OneWay}"
                     ToggleType="CheckBox" />
                 <MenuItem
-                    Command="{Binding ToggleAlgorithmCommand}"
+                    Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                     CommandParameter="SHA256"
                     Header="SHA256"
-                    IsChecked="{Binding HashSha256}"
+                    IsChecked="{Binding HashSha256, Mode=OneWay}"
                     ToggleType="CheckBox" />
                 <MenuItem
-                    Command="{Binding ToggleAlgorithmCommand}"
+                    Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                     CommandParameter="SHA384"
                     Header="SHA384"
-                    IsChecked="{Binding HashSha384}"
+                    IsChecked="{Binding HashSha384, Mode=OneWay}"
                     ToggleType="CheckBox" />
                 <MenuItem
-                    Command="{Binding ToggleAlgorithmCommand}"
+                    Command="{Binding ToggleAlgorithmCommand, Mode=OneWay}"
                     CommandParameter="SHA512"
                     Header="SHA512"
-                    IsChecked="{Binding HashSha512}"
+                    IsChecked="{Binding HashSha512, Mode=OneWay}"
                     ToggleType="CheckBox" />
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Command="{Binding AboutCommand}" Header="About" />
+                <MenuItem Command="{Binding AboutCommand, Mode=OneWay}" Header="About" />
             </MenuItem>
         </Menu>
 
         <ScrollViewer
             Grid.Row="1"
             AllowAutoHide="False"
-            IsVisible="{Binding !ShowAsGrid}">
+            IsVisible="{Binding !ShowAsGrid, Mode=OneWay}">
             <ItemsControl
                 Margin="24,12,24,12"
                 AutomationProperties.Name="Results"
-                IsVisible="{Binding !!Results.Count}"
-                ItemsSource="{Binding Results}" />
+                IsVisible="{Binding !!Results.Count, Mode=OneWay}"
+                ItemsSource="{Binding Results, Mode=OneWay}" />
         </ScrollViewer>
 
         <ListBox
             Grid.Row="1"
             Grid.IsSharedSizeScope="True"
             IsVisible="False"
-            ItemsSource="{Binding Results}"
+            ItemsSource="{Binding Results, Mode=OneWay}"
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-            SelectedItem="{Binding SelectedItem}">
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ShowGridLines="False">
@@ -239,53 +239,53 @@
                             Padding="0"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Name}" />
+                            Text="{Binding Name, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="1"
                             Padding="4,0"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding FileSize}" />
+                            Text="{Binding FileSize, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="2"
                             Padding="4,0"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Crc32Hash}" />
+                            Text="{Binding Crc32Hash, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="3"
                             Padding="4,0"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Md5Hash}" />
+                            Text="{Binding Md5Hash, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="4"
                             Padding="4,0"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Sha1Hash}" />
+                            Text="{Binding Sha1Hash, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="5"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Sha256Hash}" />
+                            Text="{Binding Sha256Hash, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="6"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Sha384Hash}" />
+                            Text="{Binding Sha384Hash, Mode=OneWay}" />
                         <TextBlock
                             Grid.Column="7"
                             HorizontalAlignment="Stretch"
                             FontSize="12"
-                            Text="{Binding Sha512Hash}" />
+                            Text="{Binding Sha512Hash, Mode=OneWay}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ContextFlyout>
                 <MenuFlyout>
                     <MenuItem
-                        Command="{Binding CopySelectedCommand}"
+                        Command="{Binding CopySelectedCommand, Mode=OneWay}"
                         Header="Copy Checksums"
                         HotKey="{OnPlatform Ctrl+C,
                                             macOS=⌘+C}"
@@ -306,8 +306,8 @@
             CanUserResizeColumns="True"
             ClipboardCopyMode="None"
             IsReadOnly="True"
-            ItemsSource="{Binding Results}"
-            SelectedItem="{Binding SelectedItem}">
+            ItemsSource="{Binding Results, Mode=OneWay}"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <DataGrid.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                     <MultiBinding.Bindings>
@@ -319,49 +319,49 @@
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Name}"
+                    Binding="{Binding Name, Mode=OneWay}"
                     FontSize="12"
                     Header="Name"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding FileSize}"
+                    Binding="{Binding FileSize, Mode=OneWay}"
                     FontSize="12"
                     Header="Size"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Crc32Hash}"
+                    Binding="{Binding Crc32Hash, Mode=OneWay}"
                     FontSize="12"
                     Header="CRC32"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Md5Hash}"
+                    Binding="{Binding Md5Hash, Mode=OneWay}"
                     FontSize="12"
                     Header="MD5"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Sha1Hash}"
+                    Binding="{Binding Sha1Hash, Mode=OneWay}"
                     FontSize="12"
                     Header="SHA1"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Sha256Hash}"
+                    Binding="{Binding Sha256Hash, Mode=OneWay}"
                     FontSize="12"
                     Header="SHA256"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Sha384Hash}"
+                    Binding="{Binding Sha384Hash, Mode=OneWay}"
                     FontSize="12"
                     Header="SHA384"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Sha512Hash}"
+                    Binding="{Binding Sha512Hash, Mode=OneWay}"
                     FontSize="12"
                     Header="SHA512"
                     IsReadOnly="True" />
@@ -370,7 +370,7 @@
                 <MenuFlyout>
                     <MenuItem
                         x:Name="CopyToSelectedMenuItem"
-                        Command="{Binding CopySelectedCommand}"
+                        Command="{Binding CopySelectedCommand, Mode=OneWay}"
                         Header="Copy Checksums"
                         HotKey="{OnPlatform Ctrl+C,
                                             macOS=⌘+C}"
@@ -384,7 +384,7 @@
             Grid.Row="1"
             Margin="24,12,24,12"
             BorderThickness="0"
-            IsVisible="{Binding !Results.Count}">
+            IsVisible="{Binding !Results.Count, Mode=OneWay}">
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -400,15 +400,15 @@
                 Margin="12"
                 Command="{Binding CancelCommand, Mode=OneWay}"
                 Content="Cancel"
-                IsVisible="{Binding IsCalculating}" />
+                IsVisible="{Binding IsCalculating, Mode=OneWay}" />
             <ProgressBar
                 Grid.Column="1"
                 MinHeight="8"
                 Margin="12"
-                IsVisible="{Binding IsCalculating}"
+                IsVisible="{Binding IsCalculating, Mode=OneWay}"
                 Maximum="100"
                 Minimum="0"
-                Value="{Binding TotalProgress}" />
+                Value="{Binding TotalProgress, Mode=OneWay}" />
         </Grid>
 
         <Border

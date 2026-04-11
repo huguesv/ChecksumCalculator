@@ -4,6 +4,7 @@
 namespace Woohoo.ChecksumCalculator.AvaloniaDesktop.Services;
 
 using System;
+using Avalonia.Input.Platform;
 
 internal class ClipboardService : IClipboardService
 {
