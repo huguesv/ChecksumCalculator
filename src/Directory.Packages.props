@@ -11,7 +11,7 @@
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.1" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.4.17" />
+    <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.4.20" />
     <PackageVersion Include="FluentAvaloniaUI" Version="2.5.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.6" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
