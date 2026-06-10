@@ -46,13 +46,13 @@ jobs:
       run: zip -r ${{ github.workspace }}/src/${{ env.consoleFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip *
 
     - name: Desktop App - Upload binaries artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: desktop-${{ matrix.dotnet-runtime }}
         path: src/${{ env.desktopFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.desktopBinariesName }}.zip
 
     - name: Console App - Upload binaries artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: console-${{ matrix.dotnet-runtime }}
         path: src/${{ env.consoleFolderName }}/bin/Release/${{ env.dotnetBuildVersion }}/${{ env.consoleBinariesName }}.zip
